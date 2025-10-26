@@ -1,4 +1,6 @@
-# SGD CUDA Implementation: CPU vs GPU Performance Comparison
+# Stochastic Gradient Descent (SGD) Performance Comparison on CPU (BLAS) and GPU (CUDA/cuBLAS)
+
+**[ English | [한국어](README_ko.md) ]**
 
 A high-performance implementation of Stochastic Gradient Descent (SGD) comparing sequential CPU execution (using BLAS) against GPU-accelerated CUDA implementation on a large-scale flight delay prediction dataset.
 
@@ -23,6 +25,23 @@ This project implements and compares SGD optimization for linear regression on t
 
 **Conclusion**: GPU achieves **12x speedup** with equivalent convergence quality.
 
+### Visualization Results
+
+<p align="center">
+  <img src="plots/convergence_comparison_time_200.png" alt="CPU vs GPU Convergence (Time-based)" width="800"/>
+  <br><em>Figure 1: CPU vs GPU convergence comparison over time (200 iterations)</em>
+</p>
+
+<p align="center">
+  <img src="plots/early_convergence_12_5s.png" alt="Early Convergence Comparison" width="800"/>
+  <br><em>Figure 2: Early convergence comparison - GPU completes 12x more iterations in 12.5 seconds</em>
+</p>
+
+<p align="center">
+  <img src="plots/rmse_evolution.png" alt="RMSE Evolution" width="800"/>
+  <br><em>Figure 3: CPU Sequential RMSE evolution across 200 iterations</em>
+</p>
+
 ---
 
 ## 🔗 Original Project & Attribution
@@ -36,7 +55,6 @@ This project is a **reimplementation and extension** of the excellent work by **
 > By Daniel Sharp
 >
 > - **Project Page**: https://dsharpc.github.io/SGD/
-> - **GitHub Repository**: https://github.com/dsharpc/SGD
 
 **Original Contributions by Daniel Sharp:**
 - Core SGD, ADAM, and AMSGrad implementations in CUDA
@@ -110,8 +128,8 @@ The original `SGD_CUDA.c` used Spanish variable names incompatible with English 
 
 ### 1. Clone Repository
 ```bash
-git clone https://github.com/YOUR_USERNAME/SGD-CUDA.git
-cd SGD-CUDA
+git clone https://github.com/SeongEon-Kim/sgd-cpu-gpu-comparison.git
+cd sgd-cpu-gpu-comparison
 ```
 
 ### 2. Install Python Dependencies
@@ -121,13 +139,13 @@ pip install numpy pandas matplotlib scikit-learn kagglehub
 
 ### 3. Download Dataset
 ```bash
-python3 download_data.py
+python3 preprocessing/download_data.py
 ```
 This downloads the Kaggle dataset to `data/flights.csv` (~565 MB).
 
 ### 4. Preprocess Data
 ```bash
-python3 preprocess_flights.py
+python3 preprocessing/preprocess_flights.py
 ```
 Generates:
 - `X_train.txt` (1.4 GB) - Training features
@@ -138,7 +156,7 @@ Generates:
 
 ### 5. Add Bias Term
 ```bash
-bash preproc_flights.sh
+bash preprocessing/preproc_flights.sh
 ```
 Generates:
 - `X_ent.txt` - Training with bias (39 features)
@@ -200,19 +218,19 @@ nvcc SGD_CUDA_eng.c functions.c -o cuda_program.out -lcublas
 
 ### 1. Sequential RMSE Evolution
 ```bash
-python3 1_sequential_rmse_evolution.py
+python3 visualization/1_sequential_rmse_evolution.py
 ```
 Generates: `plots/rmse_evolution.png`
 
 ### 2. Early Convergence Comparison (First 12.5s)
 ```bash
-python3 2_early_convergence_comparison.py
+python3 visualization/2_early_convergence_comparison.py
 ```
 Generates: `plots/early_convergence_12_5s.png`
 
 ### 3. Full CPU vs GPU Comparison
 ```bash
-python3 3_cpu_gpu_time_comparison.py
+python3 visualization/3_cpu_gpu_time_comparison.py
 ```
 Generates:
 - `plots/convergence_comparison_time_200.png` (time-based)
@@ -223,16 +241,16 @@ Generates:
 ## 📁 Project Structure
 
 ```
-SGD-CUDA/
-├── README.md                          # This file
-├── PROJECT_LOG.md                     # Detailed development log
+sgd-cpu-gpu-comparison/
+├── README.md                          # This file (English)
+├── README_ko.md                       # Korean version
 │
-├── Data Download & Preprocessing
+├── preprocessing/                     # Data download & preprocessing
 │   ├── download_data.py               # Download Kaggle dataset
 │   ├── preprocess_flights.py          # Data preprocessing (Python)
 │   └── preproc_flights.sh             # Add bias term & init weights
 │
-├── Core Implementation
+├── Core Implementation (C/CUDA)
 │   ├── definitions.h                  # Type definitions and macros
 │   ├── functions.c                    # Helper functions (I/O, batch sampling)
 │   │
@@ -242,17 +260,18 @@ SGD-CUDA/
 │   ├── SGD_CUDA.c                     # Original CUDA (Spanish, won't compile)
 │   └── SGD_CUDA_eng.c                 # Fixed CUDA (English, working)
 │
-├── Visualization
+├── visualization/                     # Result visualization scripts
 │   ├── 1_sequential_rmse_evolution.py
 │   ├── 2_early_convergence_comparison.py
 │   └── 3_cpu_gpu_time_comparison.py
 │
-└── Results (not tracked in git)
-    ├── sgd_output_time_128_200.txt    # CPU 200 iter results
-    ├── sgd_output_time_128_1000.txt   # CPU 1000 iter results
-    ├── cuda_output_time_128_200.txt   # GPU 200 iter results
-    ├── cuda_output_time_128_1000.txt  # GPU 1000 iter results
-    └── plots/                         # Generated visualizations
+└── Generated Files (not in git)
+    ├── data/flights.csv               # Downloaded dataset (~565 MB)
+    ├── X_train.txt, y_train.txt       # Preprocessed training data
+    ├── X_val.txt, y_val.txt           # Preprocessed validation data
+    ├── X_ent.txt, X_valida.txt        # Data with bias term
+    ├── sgd_output_*.txt               # Execution results
+    └── plots/                         # Generated visualization images
 ```
 
 ---
@@ -356,7 +375,7 @@ If you specifically use the enhancements from this repository (data preprocessin
 @misc{sgdcudacomparison2025,
   title = {SGD CPU and GPU Performance Comparison},
   year = {2025},
-  url = {https://github.com/YOUR_USERNAME/sgd-cpu-gpu-comparison},
+  url = {https://github.com/SeongEon-Kim/sgd-cpu-gpu-comparison},
   note = {Extended implementation with preprocessing and visualization tools}
 }
 ```
