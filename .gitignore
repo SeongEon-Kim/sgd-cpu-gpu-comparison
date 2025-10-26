@@ -1,0 +1,66 @@
+# Internal development documentation (Korean, not for public repo)
+PROJECT_LOG.md
+GITHUB_FILES.md
+
+# Compiled binaries
+*.out
+*.o
+*.exe
+
+# Data files (too large for git)
+data/
+*.csv
+
+# Preprocessed data files
+X_train.txt
+X_val.txt
+y_train.txt
+y_val.txt
+X_ent.txt
+X_valida.txt
+b_bh.txt
+scaler_params.txt
+y_stats.txt
+feature_names.txt
+
+# Output/Result files
+sgd_output*.txt
+cuda_output*.txt
+error_sgd*.csv
+RMSE_SGD.txt
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+
+# Virtual environments
+venv/
+env/
+ENV/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Backup files
+*_old.*
+*_backup.*
+*.bak
+
+# Keep plots directory but ignore contents (except .gitkeep)
+plots/*
+!plots/.gitkeep
+
+# Log files
+*.log
