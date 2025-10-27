@@ -2,7 +2,7 @@
 
 **[ English | [한국어](README_ko.md) ]**
 
-A high-performance implementation of Stochastic Gradient Descent (SGD) comparing sequential CPU execution (using BLAS) against GPU-accelerated CUDA implementation on a large-scale flight delay prediction dataset.
+Performance comparison of Stochastic Gradient Descent (SGD) between CPU (BLAS) and GPU (CUDA) implementations on a large-scale flight delay prediction dataset.
 
 ## 📊 Project Overview
 
@@ -48,7 +48,7 @@ This project implements and compares SGD optimization for linear regression on t
 
 ### 🙏 Based on Daniel Sharp's Work
 
-This project is a **reimplementation and extension** of the excellent work by **Daniel Sharp**:
+This project is a **reimplementation and extension** of the work by **Daniel Sharp**:
 
 > **"Implementation of Stochastic Gradient Descent in CUDA"**
 >
@@ -391,7 +391,7 @@ This project follows the same license as the original work by Daniel Sharp.
 ## 🙏 Acknowledgments
 
 ### Primary Acknowledgment
-- **Daniel Sharp** - Original SGD CUDA implementation, methodology, and tutorial. This project would not exist without his foundational work. All core algorithms (SGD, ADAM, AMSGrad) and the CUDA/BLAS implementation structure are based on his implementation.
+- **Daniel Sharp** - Original SGD CUDA implementation, methodology, and tutorial. All core algorithms (SGD, ADAM, AMSGrad) and the CUDA/BLAS implementation structure are based on his implementation.
 
 ### Additional Acknowledgments
 - **Kaggle & US Department of Transportation** - Flight Delays Dataset

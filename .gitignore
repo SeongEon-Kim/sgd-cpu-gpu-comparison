@@ -58,9 +58,10 @@ Thumbs.db
 *_backup.*
 *.bak
 
-# Keep plots directory but ignore contents (except .gitkeep)
+# Keep plots directory structure and PNG images
 plots/*
 !plots/.gitkeep
+!plots/*.png
 
 # Log files
 *.log

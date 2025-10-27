@@ -2,7 +2,7 @@
 
 **[ [English](README.md) | 한국어 ]**
 
-대규모 항공 지연 예측 데이터셋을 활용하여 BLAS 기반 CPU 순차 실행과 GPU 가속 CUDA 구현의 확률적 경사하강법(SGD) 성능을 비교한 고성능 구현 프로젝트입니다.
+대규모 항공 지연 예측 데이터셋을 활용하여 BLAS 기반 CPU와 GPU 가속 CUDA 구현의 확률적 경사하강법(SGD) 성능을 비교한 프로젝트입니다.
 
 ## 📊 프로젝트 개요
 
@@ -48,7 +48,7 @@
 
 ### 🙏 Daniel Sharp의 작업 기반
 
-본 프로젝트는 **Daniel Sharp**의 훌륭한 작업을 **재구현하고 확장**한 것입니다:
+본 프로젝트는 **Daniel Sharp**의 작업을 **재구현하고 확장**한 것입니다:
 
 > **"Implementation of Stochastic Gradient Descent in CUDA"**
 >
@@ -391,7 +391,7 @@ export LD_LIBRARY_PATH=/usr/local/cuda/lib64:$LD_LIBRARY_PATH
 ## 🙏 감사의 말
 
 ### 주요 감사
-- **Daniel Sharp** - 원본 SGD CUDA 구현, 방법론 및 튜토리얼. 그의 기초 작업 없이는 본 프로젝트가 존재할 수 없었습니다. 모든 핵심 알고리즘(SGD, ADAM, AMSGrad) 및 CUDA/BLAS 구현 구조는 그의 구현을 기반으로 합니다.
+- **Daniel Sharp** - 원본 SGD CUDA 구현, 방법론 및 튜토리얼 등의 모든 핵심 알고리즘(SGD, ADAM, AMSGrad) 및 CUDA/BLAS 구현 구조는 그의 구현을 기반으로 합니다.
 
 ### 추가 감사
 - **Kaggle & 미국 교통부** - 항공 지연 데이터셋
