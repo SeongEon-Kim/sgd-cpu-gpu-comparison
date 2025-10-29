@@ -237,7 +237,7 @@ python3 visualization/3_cpu_gpu_time_comparison.py
 
 ---
 
-## 📁 프로젝트 구조
+## 프로젝트 구조
 
 ```
 sgd-cpu-gpu-comparison/

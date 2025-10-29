@@ -237,7 +237,7 @@ Generates:
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 sgd-cpu-gpu-comparison/
