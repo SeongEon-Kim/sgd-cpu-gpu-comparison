@@ -4,14 +4,14 @@
 
 대규모 항공 지연 예측 데이터셋을 활용하여 BLAS 기반 CPU와 GPU 가속 CUDA 구현의 확률적 경사하강법(SGD) 성능을 비교한 프로젝트입니다.
 
-## 📊 프로젝트 개요
+## 프로젝트 개요
 
-본 프로젝트는 **미국 교통부 항공 지연 데이터셋** (500만+ 레코드)을 대상으로 선형 회귀를 위한 SGD 최적화를 구현하고 비교합니다:
+본 프로젝트는 **미국 교통부 항공 지연 데이터셋** (500만+ 행)을 대상으로 선형 회귀를 위한 SGD 최적화를 구현하고 비교합니다:
 
-- **CPU 구현**: BLAS (Basic Linear Algebra Subprograms)를 사용한 순차 C 코드
-- **GPU 구현**: cuBLAS를 사용한 CUDA C 코드
+- **CPU 구현**: BLAS (Basic Linear Algebra Subprograms)를 사용한 코드
+- **GPU 구현**: cuBLAS를 사용한 CUDA 코드
 - **데이터셋**: 5,819,079개의 항공 기록 → 정제 후 5,714,008개
-- **특성 (Features)**: 38개 (5개 수치형 + 33개 범주형 원-핫 인코딩) + 편향 항
+- **특성 (Features)**: 38개 (5개 수치형 + 33개 범주형 원-핫 인코딩) + 편향 (1개)
 - **목표 변수**: DEPARTURE_DELAY (항공기 출발 지연 시간, 분 단위)
 
 ### 성능 결과
@@ -20,8 +20,8 @@
 |------|--------------|----------|-----------|
 | **총 실행 시간** (200회 반복) | 337초 (~5.6분) | 28초 | **12배 빠름** |
 | **반복당 시간** | ~1.69초 | ~0.14초 | **12배 빠름** |
-| **최종 Train RMSE** | 0.99 | 1.00 | 동등 |
-| **최종 Val RMSE** | 0.99 | 1.00 | 동등 |
+| **최종 Train RMSE** | 0.98 | 0.99 | 동등 |
+| **최종 Val RMSE** | 0.98 | 0.99 | 동등 |
 
 **결론**: GPU는 동등한 수렴 품질로 **12배 속도 향상**을 달성했습니다.
 
@@ -38,15 +38,15 @@
 </p>
 
 <p align="center">
-  <img src="plots/rmse_evolution.png" alt="RMSE 진화" width="800"/>
-  <br><em>그림 3: CPU 순차 실행의 RMSE 진화 (200회 반복)</em>
+  <img src="plots/rmse_evolution.png" alt="RMSE 변화" width="800"/>
+  <br><em>그림 3: CPU 순차 실행의 RMSE 변화 (200회 반복)</em>
 </p>
 
 ---
 
-## 🔗 원본 프로젝트 및 출처
+## 원본 프로젝트 및 출처
 
-### 🙏 Daniel Sharp의 작업 기반
+### Daniel Sharp의 작업 기반으로 작업하였습니다.
 
 본 프로젝트는 **Daniel Sharp**의 작업을 **재구현하고 확장**한 것입니다:
 
@@ -56,40 +56,40 @@
 >
 > - **프로젝트 페이지**: https://dsharpc.github.io/SGD/
 
-**Daniel Sharp의 원본 기여:**
+**원본 프로젝트 구현 내용:**
 - CUDA 기반 SGD, ADAM, AMSGrad 핵심 구현
 - BLAS를 사용한 순차 C 구현
 - 구조 정의 및 헬퍼 함수 (`definitions.h`, `functions.c`)
 - 원본 성능 비교 방법론
 
-**본 저장소의 개선 및 추가 사항:**
-본 저장소는 Daniel Sharp의 기반 위에 누락된 구성 요소를 해결하고 새로운 기능을 추가했습니다:
+**본 레포지토리의 개선 및 추가 사항:**
+본 레포지토리는 Daniel Sharp의 원본 프로젝트에 누락된 요소를 반영하고 새로운 기능을 추가했습니다:
 
 ### 주요 차이점 및 개선 사항
 
-#### 1. **누락된 파일 - 처음부터 새로 작성**
-원본 프로젝트는 저장소에 제공되지 않은 여러 파일을 참조했습니다:
+#### 1. **누락된 파일 - 별도의 파일로 구현**
+원본 프로젝트는 제공되지 않은 여러 파일의 참조가 필요했다.:
 
 - **`scaler_flights.R`**: 데이터 전처리용 R 스크립트
-  - ❌ 제공되지 않음
-  - ✅ **본 저장소의 해결책**: Python으로 `preprocess_flights.py` 작성 (향상된 기능 포함):
+  - 제공되지 않음
+  - **본 레포지토리의 해결책**: Python으로 `preprocess_flights.py` 작성 (향상된 기능 포함):
     - 범주형 인코딩 수정 (항상 38개 특성 생성)
     - X (수치형 특성)와 y (목표 변수) 모두 표준화
     - 일관된 스케일링으로 train/validation 분할
 
 - **`download_data.py`**: 데이터 다운로드 스크립트
-  - ❌ 제공되지 않음
-  - ✅ **본 저장소의 해결책**: Kaggle API (`kagglehub`) 사용하여 작성
+  - 제공되지 않음
+  - **본 레포지토리의 해결책**: Kaggle API (`kagglehub`) 사용하여 작성
 
 #### 2. **언어 호환성 문제 - 수정**
-원본 `SGD_CUDA.c`는 영어 `definitions.h`와 호환되지 않는 스페인어 변수명을 사용했습니다:
+원본 `SGD_CUDA.c`는 영어로 작성된 `definitions.h`와 호환되지 않는 스페인어 변수명을 사용했습니다:
 
 - **문제점**:
   - 스페인어 타입: `arreglo_2d_T`, `arreglo_1d_T`
   - 스페인어 매크로: `entrada_vector` (`definitions.h`에 정의되지 않음)
   - 헤더: `definiciones.h` (누락됨)
 
-- ✅ **본 저장소의 해결책**: 완전한 영어 번역으로 `SGD_CUDA_eng.c` 작성:
+- **본 레포지토리의 해결책**: 영문화를 적용한 `SGD_CUDA_eng.c` 작성:
   - 타입: `array_2d_T`, `array_1d_T`
   - 매크로: `value_vector` (`definitions.h`에 정의됨)
   - 13개 매크로 교체 + 변수명 번역
@@ -99,11 +99,10 @@
 - **시간 측정**: CPU 성능 측정을 위한 `SGD_sequential_time.c` 작성
 - **목표 변수 표준화**: RMSE ~1.0을 위한 y 변수 스케일링 추가 (원본은 ~1300)
 - **시각화 스크립트**: 포괄적인 결과 분석을 위한 Python 스크립트 3개
-- **상세한 문서화**: 완전한 개발 히스토리를 담은 `PROJECT_LOG.md`
 
 ---
 
-## 🛠️ 요구사항
+## 요구사항
 
 ### 하드웨어
 - **GPU**: CUDA 지원 NVIDIA GPU (RTX 4000 Ada, 20GB VRAM에서 테스트됨)
@@ -124,9 +123,9 @@
 
 ---
 
-## 📥 설치 및 설정
+## 설치 및 설정
 
-### 1. 저장소 복제
+### 1. 레포지토리 복제
 ```bash
 git clone https://github.com/SeongEon-Kim/sgd-cpu-gpu-comparison.git
 cd sgd-cpu-gpu-comparison
@@ -165,9 +164,9 @@ bash preprocessing/preproc_flights.sh
 
 ---
 
-## 🚀 사용 방법
+## 사용 방법
 
-### CPU 순차 실행
+### CPU 순차 구현 버전 실행
 
 **컴파일:**
 ```bash
@@ -191,7 +190,7 @@ gcc -Wall SGD_sequential_time.c functions.c -o sgd_time.out -lblas -lm
 - `200`/`1000` - 반복 횟수
 - `-0.001` - 학습률
 
-### GPU CUDA 실행
+### GPU CUDA 병렬 구현 버전 실행
 
 **컴파일:**
 ```bash
@@ -214,9 +213,9 @@ nvcc SGD_CUDA_eng.c functions.c -o cuda_program.out -lcublas
 
 ---
 
-## 📈 시각화
+## 시각화
 
-### 1. 순차 RMSE 진화
+### 1. 순차 RMSE 변화
 ```bash
 python3 visualization/1_sequential_rmse_evolution.py
 ```
@@ -243,7 +242,7 @@ python3 visualization/3_cpu_gpu_time_comparison.py
 ```
 sgd-cpu-gpu-comparison/
 ├── README.md                          # 영어 버전
-├── README_ko.md                       # 한국어 버전 (이 파일)
+├── README_ko.md                       # 한국어 버전
 │
 ├── preprocessing/                     # 데이터 다운로드 및 전처리
 │   ├── download_data.py               # Kaggle 데이터셋 다운로드
@@ -276,7 +275,7 @@ sgd-cpu-gpu-comparison/
 
 ---
 
-## 🧪 실험 세부 사항
+## 실험 세부 사항
 
 ### 데이터셋 처리
 - **원본**: 5,819,079개 레코드, 31개 변수
@@ -302,10 +301,10 @@ sgd-cpu-gpu-comparison/
 
 ---
 
-## 📊 주요 결과
+## 주요 결과
 
 ### 수렴 품질
-- CPU와 GPU 구현 모두 **RMSE ~0.99-1.00**로 수렴
+- CPU와 GPU 구현 모두 **RMSE ~0.98-0.99**로 수렴
 - 과적합 없음 (train/val RMSE 유사)
 - 수렴은 ~10회 반복 후 안정화
 
@@ -322,12 +321,12 @@ sgd-cpu-gpu-comparison/
 
 ---
 
-## 🔧 문제 해결
+## 문제 해결
 
 ### CUDA 컴파일 오류
 `arreglo_2d_T` 또는 `entrada_vector`에 대한 오류가 표시되는 경우:
-- ✅ `SGD_CUDA_eng.c` 사용 (영어 버전)
-- ❌ `SGD_CUDA.c` 사용하지 말 것 (스페인어 버전, `definitions.h`와 컴파일 불가)
+- `SGD_CUDA_eng.c` 사용 (영어 버전)
+- `SGD_CUDA.c` 은 참고로만 확인할 것 (스페인어 버전, `definitions.h`와 컴파일 불가)
 
 ### BLAS 라이브러리를 찾을 수 없음
 ```bash
@@ -349,13 +348,17 @@ export PATH=/usr/local/cuda/bin:$PATH
 export LD_LIBRARY_PATH=/usr/local/cuda/lib64:$LD_LIBRARY_PATH
 ```
 
+### 절대 경로
+전처리 스크립트(`download_data.py`, `preprocess_flights.py`)에는 `/workspace/SGD` 형태의 절대 경로가 하드코딩되어 있습니다. 
+다른 환경에서 실행 시 해당 경로를 자신의 작업 디렉토리 경로로 수정해주세요.
+
 ---
 
-## 📝 인용 및 크레딧
+## 인용 및 크레딧
 
 ### 주 인용 (원본 작업)
 
-**본 구현을 사용하는 경우 Daniel Sharp의 원본 작업을 인용해주세요:**
+**본 연구의 중심 구현 내용을 활용할 경우 Daniel Sharp의 원본 작업을 인용해주세요:**
 
 ```bibtex
 @misc{sharp2020sgd,
@@ -367,9 +370,9 @@ export LD_LIBRARY_PATH=/usr/local/cuda/lib64:$LD_LIBRARY_PATH
 }
 ```
 
-### 부 인용 (본 저장소)
+### 부 인용 (본 레포지토리)
 
-본 저장소의 개선 사항(데이터 전처리, 시각화 등)을 특별히 사용하는 경우:
+본 레포지토리의 개선 사항(데이터 전처리, 시각화 등)을 사용하는 경우:
 
 ```bibtex
 @misc{sgdcudacomparison2025,
@@ -382,28 +385,10 @@ export LD_LIBRARY_PATH=/usr/local/cuda/lib64:$LD_LIBRARY_PATH
 
 ---
 
-## 📄 라이선스
-
-본 프로젝트는 Daniel Sharp의 원본 작업과 동일한 라이선스를 따릅니다.
-
----
-
-## 🙏 감사의 말
-
-### 주요 감사
-- **Daniel Sharp** - 원본 SGD CUDA 구현, 방법론 및 튜토리얼 등의 모든 핵심 알고리즘(SGD, ADAM, AMSGrad) 및 CUDA/BLAS 구현 구조는 그의 구현을 기반으로 합니다.
-
-### 추가 감사
-- **Kaggle & 미국 교통부** - 항공 지연 데이터셋
-- **NVIDIA** - CUDA Toolkit 및 cuBLAS 라이브러리
-- **Erick Palacios** - 원본 구조 정의 및 헬퍼 함수 (Daniel Sharp의 작업에서 언급)
-
----
-
-## 📧 연락처
+## 이슈 관련 문의
 
 질문이나 문제가 있는 경우 GitHub에서 이슈를 열어주세요.
 
 ---
 
-**최종 업데이트**: 2025-10-26 17:00 UTC
+**최종 업데이트**: 2025-10-29 17:10
