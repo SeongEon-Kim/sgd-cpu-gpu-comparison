@@ -11,8 +11,11 @@ print("Downloading flight delays dataset from Kaggle...")
 path = kagglehub.dataset_download("usdot/flight-delays")
 print(f"Dataset downloaded to: {path}")
 
-# data 폴더로 복사
-target_dir = "/workspace/SGD/data"
+# data 폴더로 복사 (스크립트 위치 기준 상대 경로)
+script_dir = os.path.dirname(os.path.abspath(__file__))
+project_root = os.path.dirname(script_dir)
+target_dir = os.path.join(project_root, "data")
+os.makedirs(target_dir, exist_ok=True)
 print(f"\nCopying files to {target_dir}...")
 
 # 다운로드된 파일들을 data 폴더로 복사

@@ -22,7 +22,10 @@ from sklearn.preprocessing import StandardScaler
 print("=" * 80)
 print("Flight Delays Data Preprocessing (Python version of scaler_flights.R)")
 print("=" * 80)
-data_path = "/workspace/SGD/data/flights.csv"
+# 스크립트 위치 기준 상대 경로
+script_dir = os.path.dirname(os.path.abspath(__file__))
+project_root = os.path.dirname(script_dir)
+data_path = os.path.join(project_root, "data", "flights.csv")
 usecols = [
     "MONTH", "DAY_OF_WEEK", "AIRLINE",
     "TAXI_OUT", "SCHEDULED_TIME", "ELAPSED_TIME", "AIR_TIME", "DISTANCE",
@@ -117,8 +120,8 @@ print(f"  y_val_scaled: mean={y_val_scaled.mean():.6f}, std={y_val_scaled.std():
 # ------------------------------------------------------------
 # [6/7] 저장
 # ------------------------------------------------------------
-print("[6/7] Saving files to /workspace/SGD ...")
-out = "/workspace/SGD"
+print(f"[6/7] Saving files to {project_root} ...")
+out = project_root
 os.makedirs(out, exist_ok=True)
 
 np.savetxt(f"{out}/X_train.txt", X_train, fmt="%.6f")
